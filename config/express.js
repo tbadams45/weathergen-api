@@ -19,13 +19,15 @@ module.exports = function(app, config) {
 
     app.use(compression());
 
+    console.log(config.root + '/public');
     app.use(express.static(config.root + '/public'));
+
+    app.set('view engine', 'ejs');
 
     app.use(bodyParser.json({limit: '50mb'}));
     app.use(bodyParser.urlencoded({extended: true}));
-
-    app.set('view engine', 'ejs');
     //app.use('/kue', kue.app);
+
     require('./routes')(app);
 
     // error handlers
