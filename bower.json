@@ -1,0 +1,23 @@
+{
+  "name": "weathergen-api",
+  "version": "1.0.0",
+  "homepage": "https://github.com/tbadams45/weathergen-api#readme",
+  "authors": [
+    "Jeff Walker <walker.jeff.d@gmail.com>",
+    "Timothy Adams <tbadams45@gmail.com>"
+  ],
+  "description": "A stand-alone API for the R weathergen package",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.7"
+  }
+}

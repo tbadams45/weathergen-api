@@ -1,0 +1,49 @@
+{
+  "name": "weathergen-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "description": "A stand-alone API for the R weathergen package",
+  "main": "app.js",
+  "engines": {
+    "node": "~6.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbadams45/weathergen-api.git"
+  },
+  "keywords": [
+    "Weather Generator"
+  ],
+  "author": {
+    "name": "Timothy Adams",
+    "email": "tbadams45@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tbadams45/weathergen-api/issues"
+  },
+  "homepage": "https://github.com/tbadams45/weathergen-api#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "compression": "^1.6.2",
+    "debug": "^2.6.8",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "fs": "0.0.1-security",
+    "kue": "^0.11.6",
+    "serve-favicon": "^2.4.3"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-html2js": "^0.3.8"
+  }
+}
