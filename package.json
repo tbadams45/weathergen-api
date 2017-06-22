@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "DEBUG=express*,weathergen-api* node ./bin/www"
   },
   "description": "A stand-alone API for the R weathergen package",
   "main": "app.js",
@@ -28,14 +28,19 @@
   },
   "homepage": "https://github.com/tbadams45/weathergen-api#readme",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
     "debug": "^2.6.8",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "express-zip": "^2.0.1",
     "fs": "0.0.1-security",
+    "fs-writefile-promise": "^2.0.0",
     "kue": "^0.11.6",
-    "serve-favicon": "^2.4.3"
+    "path": "^0.12.7",
+    "serve-favicon": "^2.4.3",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
@@ -44,6 +49,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-html2js": "^0.3.8"
+    "grunt-html2js": "^0.3.8",
+    "thread-sleep": "^2.0.0"
   }
 }

@@ -9,6 +9,7 @@ module.exports = {
         env: 'development',
         root: rootPath,
         run_folder: path.join(rootPath, 'runs'),
+        queue_folder: path.join(rootPath, 'queue'),
         app: {
             name: 'weathergen API - dev'
         }
@@ -17,6 +18,7 @@ module.exports = {
         env: 'production',
         root: rootPath,
         run_folder: path.join(rootPath, 'runs'),
+        queue_folder: path.join(rootPath, 'queue'),
         app: {
             name: 'weathergen API'
         }
