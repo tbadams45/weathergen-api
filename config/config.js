@@ -12,7 +12,8 @@ module.exports = {
         queue_folder: path.join(rootPath, 'queue'),
         app: {
             name: 'weathergen API - dev'
-        }
+        },
+        aws_bucket: 'weathergen-api-test'
     },
     production: {
         env: 'production',
@@ -21,6 +22,7 @@ module.exports = {
         queue_folder: path.join(rootPath, 'queue'),
         app: {
             name: 'weathergen API'
-        }
+        },
+        aws_bucket: 'weathergen-api-test'
     }
 }
