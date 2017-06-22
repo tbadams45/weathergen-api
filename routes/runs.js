@@ -12,7 +12,7 @@ var env = process.env.NODE_ENV || 'development',
 var AdmZip = require('adm-zip');
 
 var router = express.Router();
-var debug = require('debug')('weathergen-api:runs');
+var debug = require('debug')('weathergen-api:routes_runs');
 
 
 router.get("/:uid", function(req, res) {
@@ -32,6 +32,8 @@ router.get("/:uid", function(req, res) {
                 var zip = new AdmZip();
                 zip.addLocalFile(path.join(wd, "inputs.json"));
                 zip.addLocalFile(path.join(wd, "data.json"));
+                zip.addLocalFile(path.join(wd, "sim.csv"));
+                zip.addLocalFile(path.join(wd, "sim.rda"));
                 //zip.writeZip("/home/tbadams45/files.zip");
 
                 var zipped = zip.toBuffer();

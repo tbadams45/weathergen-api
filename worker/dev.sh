@@ -1,0 +1,1 @@
+DEBUG=weathergen-api:* node app.js
