@@ -4,6 +4,8 @@
 var path = require('path');
 var rootPath = path.normalize(__dirname + "/.."); // parent dir
 
+
+
 module.exports = {
     development: {
         env: 'development',
@@ -13,7 +15,7 @@ module.exports = {
         app: {
             name: 'weathergen API - dev'
         },
-        aws_bucket: 'weathergen-api-test'
+        aws_bucket: 'weathergen-api'
     },
     production: {
         env: 'production',
@@ -23,6 +25,6 @@ module.exports = {
         app: {
             name: 'weathergen API'
         },
-        aws_bucket: 'weathergen-api-test'
+        aws_bucket: 'weathergen-api'
     }
 }
