@@ -14,7 +14,7 @@ You can call `wgen_daily()` either in single run or batch mode. Batch mode allow
 
 These are the current arguments that are exposed, along with their defaults for a single run (formatted in JSON, as the API expects). If you wanted to run a batch run, you would provide an array of values for any of `dry_spell_changes`, `wet_spell_changes`, `prcp_mean_changes`, `prcp_cv_changes`, or `temp_mean_changes`.
 
-```JSON
+```javascript
 {
 	"inputs": {
 		"n_year": 10,
@@ -33,13 +33,66 @@ These are the current arguments that are exposed, along with their defaults for 
 }
 ```
 
-Arguments are explained in the [Introduction to the weathergen Package](https://s3.amazonaws.com/walkerenvres.com/reports/academics/2015-umass-cee-weathergen/AppendixA-Introduction_to_the_weathergen_Package.pdf)
-
-### What you get
+Arguments are explained in the [Introduction to the weathergen Package](https://s3.amazonaws.com/walkerenvres.com/reports/academics/2015-umass-cee-weathergen/AppendixA-Introduction_to_the_weathergen_Package.pdf).
 
 ### Calling the API
 
-#### Expected input format
+Once the API is running, you can either a single or batch run by calling `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/single` or `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/batch`, respectively. Calls should be POST requests, and should include the inputs and historical data in a single json object as the body. When the run(s) are finished, the output will be a zip file containing the results of the run(s) and the inputs used to calculate that run. Simulation output data is stored in CSV format.
+
+Runs can take a long time (~1-2 minutes for single runs and easily around 2 hours for batch runs). Therefore, when the API receives your request for a run, it will start a job that will perform the simulation run and send back a 202 Accepted response. The body of this response will contain a URI that you can poll with a GET request to find out when your job has been completed (i.e., at `API_IP_ADDRESS_OR_DOMAIN_NAME/URI`. When the job is done, the server will send a 303 See Other code, along with a location header that specifies where the URI where job results can be found. A GET request at this URI will return a zip file with the results of the job.
+
+Putting it all together, submitting a job and polling for its task completion would look something like this. This example is written using Node and the request library to send the actual HTTP requests.
+
+```javascript
+var historical = require('./inputs_and_historical_data.json');
+request(
+	{
+	    method: "POST",
+	    url: "http://API_IP_ADDRESS_OR_DOMAIN_NAME/wgen/batch",
+	    json: historical
+	},
+	function(error, response, body) {
+	    if(response.statusCode === 202) { //accepted
+		var uri = body;
+		pollQueue(uri, 0, function(location) {
+		    console.log("polled, and got " + location + " for location");
+		    request({
+			    method: 'GET',
+			    url: "http://API_IP_ADDRESS_OR_DOMAIN_NAME" + location,
+			    encoding: null
+			}, function(error, response, body) {
+			    fs.writeFile("/path/to/file/batch_results.zip", body, function() {
+				console.log("wrote batch zip file");
+			    });
+			}
+		    )
+		});
+	    }
+	}
+);
+
+function pollQueue(uri, timesPolled, callback, lastTimeout) {
+    console.log("timesPolled: ", timesPolled);
+    if(timesPolled > 28800) {
+        // 288800 is (60 sec/min * 60 min/hr * 24 hr) / 3 sec/poll. Aka 24 hours.
+        throw 'ResourceWillNeverBeReady';
+    }
+
+    console.log("polling " + uri);
+    request({
+      url: "http://API_IP_ADDRESS_OR_DOMAIN_NAME/" + uri,
+      followRedirect: false
+    }, function (error, response, body) {
+        if(response.statusCode === 303) {
+            callback(response.headers.location);
+            return;
+        }
+        setTimeout(function() { pollQueue(uri, timesPolled + 1, callback);}, 3000);
+    });
+}
+```
+
+### Expected input format
 
 // input
 
