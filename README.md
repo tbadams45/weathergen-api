@@ -10,12 +10,10 @@ The R weathergen package is based on R scripts written by Scott Steinschneider. 
 
 You can use this API to call `wgen_daily()`, the workhorse function from in the weathergen package. `wgen_daily()` generates synthetic weather data for a single site based on historical data provided by the user, along with a set of inputs that specify changes in the statistics of the weather data compared to the historical data. 
 
-You can call `wgen_daily()` either in single run or batch mode. Batch mode allows you to specify an array
-
-These are the current arguments that are exposed, along with their defaults for a single run (formatted in JSON, as the API expects). If you wanted to run a batch run, you would provide an array of values for any of `dry_spell_changes`, `wet_spell_changes`, `prcp_mean_changes`, `prcp_cv_changes`, or `temp_mean_changes`.
+You can call `wgen_daily()` either in single run or batch mode. These are the current arguments that are exposed, along with their defaults for a single run (formatted in JSON, as the API expects). If you wanted to run a batch run, you would provide an array of values for any of `dry_spell_changes`, `wet_spell_changes`, `prcp_mean_changes`, `prcp_cv_changes`, or `temp_mean_changes`.
 
 ```javascript
-{
+var postBody = {
 	"inputs": {
 		"n_year": 10,
 		"start_month": 10,
@@ -28,7 +26,15 @@ These are the current arguments that are exposed, along with their defaults for 
 	},
 
 	"data": {
-		//...
+		{
+			"date": "1970-01-01T00:00:00.000Z",
+			"prcp": 0.0746606728,
+			"temp": 16.1913959589,
+			"tmin": 11.1913959589,
+			"tmax": 21.1913959589,
+			"wind": 6.4093037678
+	  	}, 
+	  	//...
 	}
 }
 ```
@@ -37,9 +43,9 @@ Arguments are explained in the [Introduction to the weathergen Package](https://
 
 ### Calling the API
 
-Once the API is running, you can either a single or batch run by calling `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/single` or `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/batch`, respectively. Calls should be POST requests, and should include the inputs and historical data in a single json object as the body. When the run(s) are finished, the output will be a zip file containing the results of the run(s) and the inputs used to calculate that run. Simulation output data is stored in CSV format.
+Once the API is running, you can either a single or batch run by calling `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/single` or `API_IP_ADDRESS_OR_DOMAIN_NAME/api/wgen/batch`, respectively. Calls should be POST requests, and should include the inputs and historical data in a single JSON object as the body. When the run(s) are finished, the output will be a zip file containing the results of the run(s) and the inputs used to calculate that run. Simulation output data is stored in CSV format.
 
-Runs can take a long time (~1-2 minutes for single runs and easily around 2 hours for batch runs). Therefore, when the API receives your request for a run, it will start a job that will perform the simulation run and send back a 202 Accepted response. The body of this response will contain a URI that you can poll with a GET request to find out when your job has been completed (i.e., at `API_IP_ADDRESS_OR_DOMAIN_NAME/URI`. When the job is done, the server will send a 303 See Other code, along with a location header that specifies where the URI where job results can be found. A GET request at this URI will return a zip file with the results of the job.
+Runs can take a long time (~1-2 minutes for single runs and easily 2 hours for batch runs). Therefore, when the API receives your request for a run, it will start a job that will perform the simulation run and send back a 202 Accepted response. The body of this response will contain a URI that you can poll with a GET request to find out when your job has been completed (i.e., at `API_IP_ADDRESS_OR_DOMAIN_NAME/URI`). When the job is done, the server will send a 303 See Other code, along with a location header that specifies where the URI where job results can be found. A GET request at this URI will return a zip file with the results of the job.
 
 Putting it all together, submitting a job and polling for its task completion would look something like this. This example is written using Node and the request library to send the actual HTTP requests.
 
@@ -94,9 +100,7 @@ function pollQueue(uri, timesPolled, callback, lastTimeout) {
 
 ### Expected input format
 
-// input
-
-// data (required data? Wind?)
+See the "What's Exposed" section above for an example of input format.
 
 ## Running the API
 
